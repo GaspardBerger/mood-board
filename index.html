@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mood Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="toolbar">
+    <span class="toolbar__title">Mood Board</span>
+    <button class="btn btn--primary" id="addBtn">+ Add Images</button>
+    <button class="btn" id="exportBtn">↓ Export PNG</button>
+    <button class="btn btn--danger" id="clearBtn">Clear all</button>
+  </div>
+
+  <!--
+    The board is the canvas where tiles live.
+    It is position: relative in CSS so that the tiles (position: absolute)
+    are placed relative to this element, not the whole page.
+  -->
+  <div class="board" id="board">
+    <p class="board__hint" id="hint">Drop images here, or click <strong>+ Add Images</strong></p>
+  </div>
+
+  <!-- Multiple files allowed -->
+  <input type="file" id="fileInput" accept="image/*" multiple hidden>
+
+  <script src="app.js"></script>
+</body>
+</html>

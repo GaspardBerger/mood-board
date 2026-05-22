@@ -1,0 +1,141 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column; /* Stack toolbar on top, board below */
+  overflow: hidden;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────── */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  height: 56px;
+  background: white;
+  border-bottom: 1px solid #e8e8e6;
+  flex-shrink: 0; /* Don't let the toolbar shrink when the board grows */
+}
+
+.toolbar__title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-right: auto; /* Pushes the buttons to the right */
+}
+
+.btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #ddd;
+  background: white;
+  color: #333;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn:hover { border-color: #999; }
+
+.btn--primary {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: white;
+}
+.btn--primary:hover { background: #333; border-color: #333; }
+
+.btn--danger:hover { border-color: #d44; color: #d44; }
+
+/* ── Board ───────────────────────────────────────────────── */
+
+.board {
+  flex: 1;              /* Fill all remaining height after the toolbar */
+  position: relative;   /* Tiles use position: absolute relative to this */
+  overflow: hidden;
+  background: #f5f5f0;
+  background-image:     /* Subtle dot grid — purely decorative */
+    radial-gradient(circle, #ccc 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.board__hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #bbb;
+  font-size: 0.95rem;
+  pointer-events: none; /* Don't block clicks on the board */
+  text-align: center;
+  line-height: 1.8;
+}
+
+/* ── Tile ────────────────────────────────────────────────── */
+
+.tile {
+  position: absolute;   /* Placed at exact x/y coordinates set by JavaScript */
+  cursor: grab;
+  user-select: none;    /* Prevents text selection from interfering with drag */
+  border-radius: 3px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  background: #ddd;     /* Visible while the image is loading */
+}
+
+.tile:active { cursor: grabbing; }
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none; /* IMPORTANT: without this, the <img> steals mouse events from the tile */
+}
+
+/* Delete button — hidden until you hover over the tile */
+.tile__delete {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile:hover .tile__delete { opacity: 1; }
+.tile__delete:hover { background: rgba(200, 40, 40, 0.8); }
+
+/* Resize handle — bottom-right corner, appears on hover */
+.tile__resize {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  cursor: se-resize;    /* se = south-east, shows the diagonal resize arrow */
+  opacity: 0;
+  transition: opacity 0.15s;
+  /* A small white triangle in the corner as a visual hint */
+  background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.75) 50%);
+}
+
+.tile:hover .tile__resize { opacity: 1; }
